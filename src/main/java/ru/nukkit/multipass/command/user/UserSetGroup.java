@@ -29,7 +29,7 @@ import ru.nukkit.multipass.util.Message;
 import ru.nukkit.multipass.util.WorldParam;
 
 
-@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"\\S+", "setgroup|setgrp|sgrp|sg", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_SETGROUP)
+@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"[A-Za-z0-9 ]{1,15}", "setgroup|setgrp|sgrp|sg", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_SETGROUP)
 public class UserSetGroup extends Cmd {
     @Override
     public boolean execute(CommandSender sender, Player player, String[] args) {

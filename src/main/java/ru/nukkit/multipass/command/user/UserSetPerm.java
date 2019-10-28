@@ -27,7 +27,7 @@ import ru.nukkit.multipass.util.Message;
 import ru.nukkit.multipass.util.Util;
 import ru.nukkit.multipass.util.WorldParam;
 
-@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"\\S+", "setperm|sperm|sp|addperm|aperm|ap", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_SETPERM)
+@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"[A-Za-z0-9 ]{1,15}", "setperm|sperm|sp|addperm|aperm|ap", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_SETPERM)
 public class UserSetPerm extends Cmd {
     @Override
     public boolean execute(CommandSender sender, Player player, String[] args) {

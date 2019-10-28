@@ -27,7 +27,7 @@ import ru.nukkit.multipass.permissions.Users;
 import ru.nukkit.multipass.util.Message;
 import ru.nukkit.multipass.util.WorldParam;
 
-@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"\\S+", "removegroup|rmvgrp|rgrp|rg", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_REMOVEGROUP)
+@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"[A-Za-z0-9 ]{1,15}", "removegroup|rmvgrp|rgrp|rg", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_REMOVEGROUP)
 public class UserRemoveGroup extends Cmd {
 
     @Override
