@@ -31,7 +31,7 @@ import ru.nukkit.multipass.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = "\\S+", permission = "multipass.admin", description = Message.CMD_USER)
+@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = "[A-Za-z0-9 ]{1,15}", permission = "multipass.admin", description = Message.CMD_USER)
 public class UserInfo extends Cmd {
     @Override
     public boolean execute(CommandSender sender, Player player, String[] args) {

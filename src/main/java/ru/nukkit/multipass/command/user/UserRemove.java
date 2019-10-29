@@ -7,7 +7,7 @@ import ru.nukkit.multipass.command.CmdDefine;
 import ru.nukkit.multipass.permissions.Users;
 import ru.nukkit.multipass.util.Message;
 
-@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"remove|rmv|delete|del", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_REMOVE)
+@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"remove|rmv|delete|del", "[A-Za-z0-9 ]{1,15}"}, permission = "multipass.admin", description = Message.CMD_USER_REMOVE)
 public class UserRemove extends Cmd {
     @Override
     public boolean execute(CommandSender sender, Player player, String[] args) {
