@@ -1,6 +1,6 @@
 name: Multipass
 main: ru.nukkit.multipass.MultipassPlugin
-version: "1.1.2"
+version: "${pom.version}"
 author: fromgate, nukkit.ru
 api: ["1.0.0"]
 softdepend: [DbLib]
