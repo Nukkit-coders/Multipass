@@ -18,9 +18,9 @@
 
 package ru.nukkit.multipass.permissions;
 
-import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.permission.PermissionAttachment;
+import cn.nukkit.player.Player;
 import ru.nukkit.multipass.MultipassPlugin;
 import ru.nukkit.multipass.util.Message;
 

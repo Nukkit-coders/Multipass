@@ -2,6 +2,6 @@ name: Multipass
 main: ru.nukkit.multipass.MultipassPlugin
 version: "${pom.version}"
 author: fromgate, nukkit.ru
-api: ["1.0.0"]
+api: ["2.0.0"]
 softdepend: [DbLib]
 description: Multipass - Leeloo Dallas Permissions engine!

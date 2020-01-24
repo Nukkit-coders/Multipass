@@ -18,8 +18,8 @@
 
 package ru.nukkit.multipass.command;
 
-import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.player.Player;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 import ru.nukkit.multipass.command.group.*;
@@ -112,7 +112,7 @@ public class Commander {
             CommandExecutor newCmd = new CommandExecutor(cmd.getCommand());
             newCmd.setDescription(description == null ? cmd.getDescription() : description.getText("NOCOLOR"));
             newCmd.setAliases(cmd.getAliases());
-            plugin.getServer().getCommandMap().register(plugin.getName() + "_cmd", newCmd);
+            plugin.getServer().getCommandMap().register(plugin, newCmd);
             Message.CMD_REGISTERED.debug(cmd.toString());
         }
         commands.add(cmd);

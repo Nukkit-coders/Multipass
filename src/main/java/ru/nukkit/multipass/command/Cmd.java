@@ -18,8 +18,8 @@
 
 package ru.nukkit.multipass.command;
 
-import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.player.Player;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
 import ru.nukkit.multipass.util.Message;
@@ -33,7 +33,6 @@ public abstract class Cmd {
     private String[] permission;
     private boolean allowConsole;
     Message description;
-    String cmdDesc;
 
     public Cmd() {
         if (this.getClass().isAnnotationPresent(CmdDefine.class)) {

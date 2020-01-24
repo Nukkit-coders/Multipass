@@ -18,8 +18,8 @@
 
 package ru.nukkit.multipass.command.group;
 
-import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.player.Player;
 import ru.nukkit.multipass.command.Cmd;
 import ru.nukkit.multipass.command.CmdDefine;
 import ru.nukkit.multipass.permissions.Groups;

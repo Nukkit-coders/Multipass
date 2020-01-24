@@ -18,10 +18,10 @@
 
 package ru.nukkit.multipass.util;
 
-import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Location;
+import cn.nukkit.player.Player;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;

@@ -18,8 +18,8 @@
 
 package ru.nukkit.multipass.util;
 
-import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.player.Player;
 
 import java.util.Collection;
 

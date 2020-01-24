@@ -18,8 +18,8 @@
 
 package ru.nukkit.multipass.permissions;
 
-import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.player.Player;
 import ru.nukkit.multipass.MultipassPlugin;
 import ru.nukkit.multipass.data.Providers;
 import ru.nukkit.multipass.event.PermissionsUpdateEvent;

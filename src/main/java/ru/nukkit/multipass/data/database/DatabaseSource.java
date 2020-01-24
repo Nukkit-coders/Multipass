@@ -18,8 +18,8 @@
 
 package ru.nukkit.multipass.data.database;
 
-import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.player.Player;
 import cn.nukkit.scheduler.TaskHandler;
 import org.sql2o.Connection;
 import org.sql2o.Query;
