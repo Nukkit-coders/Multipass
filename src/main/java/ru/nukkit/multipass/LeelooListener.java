@@ -38,7 +38,7 @@ public class LeelooListener implements Listener {
         Users.closeUser(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onTeleport(PlayerTeleportEvent event) {
         if (event.getFrom().getLevel().equals(event.getTo().getLevel())) return;
         Users.recalculatePermissions(event.getPlayer().getName());
