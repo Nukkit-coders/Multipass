@@ -242,15 +242,53 @@ public class DatabaseSource extends DataProvider {
 
     @Override
     public User loadUser(String playerName) {
-        User user = new User(playerName);
-
+        User user;
+        String uuid = null;
         EntityTable userRecord;
-        try (Connection con = sql2o.open()) {
-            userRecord = con.createQuery(selectUser)
-                    .addParameter("name", playerName)
-                    .executeAndFetchFirst(EntityTable.class);
+        boolean needsUpdate = false;
+        boolean legacy = false;
+
+        Optional<UUID> optionalUUID = Server.getInstance().lookupName(playerName);
+        if (optionalUUID.isPresent()) {
+            uuid = optionalUUID.get().toString();
+            user = new User(uuid);
+
+            try (Connection con = sql2o.open()) {
+                userRecord = con.createQuery(selectUser)
+                        .addParameter("name", uuid)
+                        .executeAndFetchFirst(EntityTable.class);
+            }
+
+            if (userRecord == null) { // Try to find old data
+                try (Connection con = sql2o.open()) {
+                    userRecord = con.createQuery(selectUser)
+                            .addParameter("name", playerName)
+                            .executeAndFetchFirst(EntityTable.class);
+                }
+
+                if (userRecord == null) {
+                    return user;
+                } else {
+                    needsUpdate = true;
+                    legacy = true;
+                }
+            }
+        } else {
+            user = new User(playerName);
+
+            try (Connection con = sql2o.open()) {
+                userRecord = con.createQuery(selectUser)
+                        .addParameter("name", playerName)
+                        .executeAndFetchFirst(EntityTable.class);
+            }
+
+            if (userRecord == null) {
+                return user;
+            }
+
+            legacy = true;
+            // Can't attempt to update user without known uuid
         }
-        if (userRecord == null) return user;
 
         user.setPrefix(userRecord.prefix);
         user.setSuffix(userRecord.suffix);
@@ -261,7 +299,7 @@ public class DatabaseSource extends DataProvider {
             pt = con.createQuery(selectUserPerms)
                     .throwOnMappingFailure(false)
                     .addColumnMapping("user", "owner")
-                    .addParameter("user", playerName)
+                    .addParameter("user", legacy ? playerName : uuid)
                     .executeAndFetch(PermTable.class);
         }
         if (pt != null) {
@@ -275,13 +313,18 @@ public class DatabaseSource extends DataProvider {
             gt = con.createQuery(selectUserGroups)
                     .throwOnMappingFailure(false)
                     .addColumnMapping("user", "owner")
-                    .addParameter("user", playerName)
+                    .addParameter("user", legacy ? playerName : uuid)
                     .executeAndFetch(GroupsTable.class);
         }
         if (gt != null) {
             for (GroupsTable g : gt) {
                 user.addGroup(g.world, g.subgroup);
             }
+        }
+
+        if (needsUpdate) {
+            Providers.saveUser(user);
+            Providers.removeUser(playerName);
         }
         return user;
     }
@@ -406,12 +449,30 @@ public class DatabaseSource extends DataProvider {
     public boolean isStored(String userName) {
         if (!enabled) return false;
         EntityTable userRecord;
-        try (Connection con = sql2o.open()) {
-            userRecord = con.createQuery(selectUser)
-                    .addParameter("name", userName)
-                    .executeAndFetchFirst(EntityTable.class);
+        Optional<UUID> uuid = Server.getInstance().lookupName(userName);
+        if (uuid.isPresent()) {
+            try (Connection con = sql2o.open()) {
+                userRecord = con.createQuery(selectUser)
+                        .addParameter("name", uuid.get().toString())
+                        .executeAndFetchFirst(EntityTable.class);
+            }
+            if (userRecord == null) { // Try to find old data
+                try (Connection con = sql2o.open()) {
+                    userRecord = con.createQuery(selectUser)
+                            .addParameter("name", userName)
+                            .executeAndFetchFirst(EntityTable.class);
+                }
+                return userRecord != null;
+            }
+            return true;
+        } else {
+            try (Connection con = sql2o.open()) {
+                userRecord = con.createQuery(selectUser)
+                        .addParameter("name", userName)
+                        .executeAndFetchFirst(EntityTable.class);
+            }
+            return userRecord != null;
         }
-        return userRecord != null;
     }
 
     @Override
