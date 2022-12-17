@@ -164,8 +164,8 @@ public abstract class BaseNode extends Node {
         getWorldPassOrCreate(world).addGroup(group);
     }
 
-    public void setGroup(String world, String groupStr) {
-        setGroup(world, Groups.getGroup(world));
+    public void setGroup(String world, String group) {
+        setGroup(world, Groups.getGroup(group));
     }
 
     public void setGroup(String world, Group group) {
