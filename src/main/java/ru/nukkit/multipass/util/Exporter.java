@@ -9,6 +9,7 @@ import ru.nukkit.multipass.permissions.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 public class Exporter {
@@ -48,7 +49,17 @@ public class Exporter {
         List<User> users = new ArrayList<>();
         userCfg.getSections().entrySet().forEach(e -> {
             Node node = sectionToPass((ConfigSection) e.getValue());
-            User user = new User(e.getKey(), node);
+            String name = e.getKey();
+            /*try {
+                UUID uuid = UUID.fromString(name);
+                String fromUuid = Server.getInstance().getOfflinePlayer(uuid).getName();
+                if (fromUuid != null) {
+                    name = fromUuid;
+                    System.out.println("Converted " + uuid + " to " + name);
+                }
+            } catch (Exception ignore) {
+            }*/
+            User user = new User(name, node);
             ConfigSection worlds = cfg.getSection("worlds");
             for (String world : worlds.getKeys(false)) {
                 ConfigSection ws = worlds.getSection(world);
@@ -58,11 +69,19 @@ public class Exporter {
             }
             users.add(user);
         });
-        if (groups.isEmpty() && users.isEmpty()) return false;
+        /*if (groups.isEmpty() && users.isEmpty()) return false;
         Groups.updateGroups(groups, overwrite);
         Users.updateUsers(users, overwrite);
         Providers.saveGroups();
-        Providers.saveUsers(users);
+        Providers.saveUsers(users);*/
+        CompletableFuture.runAsync(() -> {
+            groups.forEach((g) -> Providers.getCurrentProvider().saveGroup(g));
+            System.out.println(groups.size() + " groups imported");
+            CompletableFuture.runAsync(() -> {
+                users.forEach((u) -> Providers.getCurrentProvider().saveUser(u));
+                System.out.println(users.size() + " users imported");
+            });
+        });
         return true;
     }
 
