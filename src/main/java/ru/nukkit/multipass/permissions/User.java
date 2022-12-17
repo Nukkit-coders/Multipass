@@ -24,9 +24,7 @@ import cn.nukkit.permission.PermissionAttachment;
 import ru.nukkit.multipass.MultipassPlugin;
 import ru.nukkit.multipass.util.Message;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class User extends BaseNode {
@@ -59,7 +57,9 @@ public class User extends BaseNode {
         Message.debugMessage("Recalculate permissions:", this.getName());
         if (getAttachment() == null) return;
 
-        Player player = Server.getInstance().getPlayerExact(this.name);
+        Player player = this.getPlayer();
+        if (player == null) return;
+
         String world = useWorlds() ? player.getLevel().getName() : null;
 
         Map<String, Boolean> perms = new LinkedHashMap<>();
@@ -88,9 +88,21 @@ public class User extends BaseNode {
     }
 
     public PermissionAttachment getAttachment() {
-        Player player = Server.getInstance().getPlayerExact(this.name);
-        attachment = player == null ? null : (attachment == null ? player.addAttachment(MultipassPlugin.getPlugin()) : attachment);
+        Player player = this.getPlayer();
+        if (player == null) return null;
+        attachment = attachment == null ? player.addAttachment(MultipassPlugin.getPlugin()) : attachment;
         return attachment;
+    }
+
+    private Player getPlayer() {
+        Optional<Player> optional;
+        try {
+            optional = Server.getInstance().getPlayer(UUID.fromString(this.name));
+            if (!optional.isPresent()) return null;
+        } catch (Exception ignore) {
+            return null;
+        }
+        return optional.get();
     }
 
     private boolean useWorlds() {
