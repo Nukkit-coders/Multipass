@@ -40,6 +40,7 @@ public class LeelooListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onTeleport(PlayerTeleportEvent event) {
+        if (!MultipassPlugin.getCfg().enableWorldSupport) return;
         if (event.getFrom().getLevel().equals(event.getTo().getLevel())) return;
         Users.recalculatePermissions(event.getPlayer().getName());
     }

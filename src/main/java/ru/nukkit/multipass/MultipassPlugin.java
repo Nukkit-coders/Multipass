@@ -44,11 +44,11 @@ public class MultipassPlugin extends PluginBase {
         saveResources();
         cfg = new Cfg();
         cfg.load();
-        getServer().getPluginManager().registerEvents(new LeelooListener(), this);
         Message.init(this);
         Commander.init(this);
         Providers.init();
         Groups.init();
+        getServer().getPluginManager().registerEvents(new LeelooListener(), this);
     }
 
     private void saveResources() {

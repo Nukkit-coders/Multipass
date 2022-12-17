@@ -27,7 +27,7 @@ permissions:
     default-priority: 100
   multiworld:
 # Enable multiworld support
-    enable: false
+    enable: true
 # Enable world mirroring
     mirrors:
       world: nether_world, end_world
