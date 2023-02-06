@@ -37,13 +37,13 @@ import java.util.Map;
 public enum Message {
 
     //Default (lang) messages
-    LNG_LOAD_FAIL("Failed to load languages from file. Default message used"),
+    LNG_LOAD_FAIL("Failed to load lang file! Default messages are used"),
     LNG_SAVE_FAIL("Failed to save lang file"),
     LNG_PRINT_FAIL("Failed to print message %1%. Sender object is null."),
     LNG_CONFIG("[MESSAGES] Messages: %1% Language: %2% Save translate file: %1% Debug mode: %3%"),
     WORD_UNKNOWN("Unknown"),
-    WRONG_PERMISSION("You have not enough permissions to execute this command"),
-    PERMISSION_FAIL("You have not enough permissions to execute this command", 'c'),
+    WRONG_PERMISSION("You don't have permissions to execute this command"),
+    PERMISSION_FAIL("You don't have permissions to execute this command", 'c'),
     PLAYER_COMMAD_ONLY("You can use this command in-game only!", 'c'),
     CMD_REGISTERED("Command registered: %1%"),
     CMD_FAILED("Failed to execute command. Type %1% to get help!"),
@@ -186,13 +186,12 @@ public enum Message {
 
     private static boolean debugMode = false;
     private static String language = "default";
-    private static boolean saveLanguage = false;
-    private static char c1 = 'a';
-    private static char c2 = '2';
+    private static final char c1 = 'a';
+    private static final char c2 = '2';
 
     private static PluginBase plugin = null;
 
-    private static Map<String, Long> logOnce = new HashMap<>();
+    private static final Map<String, Long> logOnce = new HashMap<>();
 
     /**
      * This is my favorite debug routine :) I use it everywhere to print out variable values
@@ -264,7 +263,6 @@ public enum Message {
         if (player == null) sender.sendMessage(message);
         else for (int i = 0; i < seconds; i++)
             Server.getInstance().getScheduler().scheduleDelayedTask(MultipassPlugin.getPlugin(), new Runnable() {
-                @SuppressWarnings("deprecation")
                 public void run() {
                     if (player.isOnline()) player.sendTip(message);
                 }
@@ -279,7 +277,6 @@ public enum Message {
      * @param s
      * @return — always returns true.
      */
-    @SuppressWarnings("deprecation")
     public boolean tip(CommandSender sender, Object... s) {
         if (sender == null) return Message.LNG_PRINT_FAIL.log(this.name());
         Player player = sender instanceof Player ? (Player) sender : null;
@@ -356,10 +353,10 @@ public enum Message {
         int count = 1;
         int c = 0;
         DecimalFormat fmt = new DecimalFormat("####0.##");
-        for (int i = 0; i < keys.length; i++) {
-            String s = keys[i].toString();
-            if (c < 2 && keys[i] instanceof Character) {
-                colors[c] = (Character) keys[i];
+        for (Object key : keys) {
+            String s = key.toString();
+            if (c < 2 && key instanceof Character) {
+                colors[c] = (Character) key;
                 c++;
                 continue;
             } else if (s.startsWith("prefix:")) {
@@ -374,18 +371,18 @@ public enum Message {
             } else if (s.equals("FULLFLOAT")) {
                 fullFloat = true;
                 continue;
-            } else if (keys[i] instanceof Location) {
-                Location loc = (Location) keys[i];
+            } else if (key instanceof Location) {
+                Location loc = (Location) key;
                 if (fullFloat)
                     s = loc.getLevel().getName() + "[" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + "]";
                 else
                     s = loc.getLevel().getName() + "[" + fmt.format(loc.getX()) + ", " + fmt.format(loc.getY()) + ", " + fmt.format(loc.getZ()) + "]";
-            } else if (keys[i] instanceof Double || keys[i] instanceof Float) {
-                if (!fullFloat) s = fmt.format((Double) keys[i]);
+            } else if (key instanceof Double || key instanceof Float) {
+                if (!fullFloat) s = fmt.format(key);
             }
 
-            String from = (new StringBuilder("%").append(count).append("%")).toString();
-            String to = skipDefaultColors ? s : (new StringBuilder("&").append(colors[1]).append(s).append("&").append(colors[0])).toString();
+            String from = "%" + count + "%";
+            String to = skipDefaultColors ? s : "&" + colors[1] + s + "&" + colors[0];
             str = str.replace(from, to);
             count++;
         }
@@ -399,8 +396,8 @@ public enum Message {
     }
 
     private String message;
-    private Character color1;
-    private Character color2;
+    private final Character color1;
+    private final Character color2;
 
     Message(String msg) {
         message = msg;
@@ -436,7 +433,7 @@ public enum Message {
         if (language.equalsIgnoreCase("default")) language = Server.getInstance().getLanguage().getLang();
         else if (language.length() > 3) language = language.substring(0, 3);
         debugMode = MultipassPlugin.getCfg().debugMode;
-        saveLanguage = MultipassPlugin.getCfg().saveLanguage;
+        boolean saveLanguage = MultipassPlugin.getCfg().saveLanguage;
 
         initMessages();
         if (saveLanguage) saveMessages();

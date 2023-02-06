@@ -23,7 +23,7 @@ import cn.nukkit.event.HandlerList;
 
 public class PermissionsUpdateEvent extends Event {
 
-    private String user;
+    private final String user;
 
     private static final HandlerList handlers = new HandlerList();
 

@@ -38,7 +38,7 @@ public class GroupInfo extends Cmd {
         if (args.length > 1) return false;
         if (args.length == 0) {
             Collection<Group> groups = Groups.getAll();
-            if (groups == null || groups.isEmpty()) return Message.GROUP_LISTNOTFOUND.print(sender);
+            if (groups.isEmpty()) return Message.GROUP_LISTNOTFOUND.print(sender);
             else {
                 List<String> groupList = new ArrayList<>();
                 groups.forEach(g -> groupList.add(g.getName()));

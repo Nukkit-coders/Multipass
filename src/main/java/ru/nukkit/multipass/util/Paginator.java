@@ -37,7 +37,7 @@ public class Paginator {
         pg.printPage(p, pageNum);
     }
 
-    private List<String> ln;
+    private final List<String> ln;
     private int lpp;
     private String title;
     private String footer;

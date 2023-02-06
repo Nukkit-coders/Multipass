@@ -170,7 +170,7 @@ public class Multipass {
             User user = getUser(player.getName()).get();
             if (user == null) return false;
             if (user.inGroup(group)) return true;
-            return MultipassPlugin.getCfg().enableWorldSupport ? user.inGroup(player.getLevel().getName(), group) : false;
+            return MultipassPlugin.getCfg().enableWorldSupport && user.inGroup(player.getLevel().getName(), group);
         } catch (Exception ignore) {
         }
         return false;
@@ -194,7 +194,7 @@ public class Multipass {
      * @return true - player is in default group
      */
     public static boolean isInDefaultGroup(Player player) {
-        return player == null ? false : isInDefaultGroup(player.getName());
+        return player != null && isInDefaultGroup(player.getName());
     }
 
     /**
@@ -260,11 +260,8 @@ public class Multipass {
         try {
             User user = getUser(player).get();
             if (user == null) return false;
-            Set<Permission> permissions = new HashSet<>();
-            permissions.addAll(user.getPermissions(world));
-            user.getGroups().forEach(g -> {
-                permissions.addAll(g.getPermissions(world));
-            });
+            Set<Permission> permissions = new HashSet<>(user.getPermissions(world));
+            user.getGroups().forEach(g -> permissions.addAll(g.getPermissions(world)));
             for (Permission p : permissions) {
                 if (p.getName().equalsIgnoreCase(permission)) return p.isPositive();
             }

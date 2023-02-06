@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Exporter {
 
-    private File file;
+    private final File file;
 
     public Exporter(String filename) {
         file = new File(MultipassPlugin.getPlugin().getDataFolder() + File.separator + filename + ".yml");
@@ -32,9 +32,9 @@ public class Exporter {
         if (groupCfg.isEmpty() && userCfg.isEmpty()) return false;
         List<Group> groups = new ArrayList<>();
 
-        groupCfg.getSections().entrySet().forEach(e -> {
-            Node node = sectionToPass((ConfigSection) e.getValue());
-            Group group = new Group(e.getKey(), node);
+        groupCfg.getSections().forEach((key, value) -> {
+            Node node = sectionToPass((ConfigSection) value);
+            Group group = new Group(key, node);
             ConfigSection worlds = cfg.getSection("worlds");
             for (String world : worlds.getKeys(false)) {
                 ConfigSection ws = worlds.getSection(world);
@@ -46,9 +46,9 @@ public class Exporter {
         });
 
         List<User> users = new ArrayList<>();
-        userCfg.getSections().entrySet().forEach(e -> {
-            Node node = sectionToPass((ConfigSection) e.getValue());
-            User user = new User(e.getKey(), node);
+        userCfg.getSections().forEach((key, value) -> {
+            Node node = sectionToPass((ConfigSection) value);
+            User user = new User(key, node);
             ConfigSection worlds = cfg.getSection("worlds");
             for (String world : worlds.getKeys(false)) {
                 ConfigSection ws = worlds.getSection(world);
@@ -72,9 +72,7 @@ public class Exporter {
         Groups.getAll().forEach(g -> {
             ConfigSection group = passToSection(g);
             ConfigSection worlds = new ConfigSection();
-            g.getWorldPass().entrySet().forEach(e -> {
-                worlds.set(e.getKey(), passToSection(e.getValue()));
-            });
+            g.getWorldPass().forEach((key, value) -> worlds.set(key, passToSection(value)));
             if (!worlds.isEmpty()) group.set("worlds", worlds);
             groupSection.set(g.getName(), group);
         });
@@ -83,9 +81,7 @@ public class Exporter {
         Providers.getCurrentProvider().getAllUsers().forEach(u -> {
             ConfigSection users = passToSection(u);
             ConfigSection worlds = new ConfigSection();
-            u.getWorldPass().entrySet().forEach(e -> {
-                worlds.set(e.getKey(), passToSection(e.getValue()));
-            });
+            u.getWorldPass().forEach((key, value) -> worlds.set(key, passToSection(value)));
             if (!worlds.isEmpty()) users.set("worlds", worlds);
             userSection.set(u.getName(), users);
         });

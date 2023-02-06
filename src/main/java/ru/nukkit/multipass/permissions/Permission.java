@@ -42,7 +42,7 @@ public class Permission {
     }
 
     public String toString() {
-        return positive ? name : new StringBuilder("-").append(name).toString();
+        return positive ? name : "-" + name;
     }
 
 

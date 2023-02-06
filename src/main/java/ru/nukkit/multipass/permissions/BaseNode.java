@@ -29,7 +29,7 @@ import java.util.*;
 public abstract class BaseNode extends Node {
 
     protected String name;
-    private Map<String, Node> worldPass;
+    private final Map<String, Node> worldPass;
 
     public BaseNode(String name) {
         super();
@@ -80,9 +80,9 @@ public abstract class BaseNode extends Node {
             if (!permMap.containsKey("")) permMap.put("", new ArrayList<>());
             permMap.get("").add(p);
         });
-        this.worldPass.entrySet().forEach(e -> {
-            if (!permMap.containsKey(e.getKey())) permMap.put(e.getKey(), new ArrayList<>());
-            e.getValue().getPermissions().forEach(p -> permMap.get(e.getKey()).add(p));
+        this.worldPass.forEach((key, value) -> {
+            if (!permMap.containsKey(key)) permMap.put(key, new ArrayList<>());
+            value.getPermissions().forEach(p -> permMap.get(key).add(p));
         });
         return permMap;
     }
@@ -138,12 +138,10 @@ public abstract class BaseNode extends Node {
             if (!groupMap.containsKey("")) groupMap.put("", new ArrayList<>());
             groupMap.get("").add(g);
         });
-        this.worldPass.entrySet().forEach(e -> {
-            e.getValue().getGroupList().forEach(g -> {
-                if (!groupMap.containsKey(e.getKey())) groupMap.put(e.getKey(), new ArrayList<>());
-                groupMap.get(e.getKey()).add(g);
-            });
-        });
+        this.worldPass.forEach((key, value) -> value.getGroupList().forEach(g -> {
+            if (!groupMap.containsKey(key)) groupMap.put(key, new ArrayList<>());
+            groupMap.get(key).add(g);
+        }));
         return groupMap;
     }
 
@@ -204,10 +202,9 @@ public abstract class BaseNode extends Node {
         return getWorldPass(world) != null;
     }
 
-
     private String getMirrorWorld(String currentWorld) {
         ConfigSection mirros = MultipassPlugin.getCfg().mirros;
-        if (mirros != null & !mirros.isEmpty())
+        if (mirros != null && !mirros.isEmpty())
             for (Map.Entry<String, Object> e : mirros.entrySet())
                 if (e.getValue() instanceof String) {
                     String[] worlds = ((String) e.getValue()).split(",\\s+");
@@ -220,7 +217,7 @@ public abstract class BaseNode extends Node {
     public Node getWorldPass(String world) {
         if (world == null || world.isEmpty()) return null;
         String targetWorld = getMirrorWorld(world);
-        return worldPass.containsKey(targetWorld) ? worldPass.get(targetWorld) : null;
+        return worldPass.getOrDefault(targetWorld, null);
     }
 
     public Map<String, Node> getWorldPass() {
@@ -250,19 +247,26 @@ public abstract class BaseNode extends Node {
     }
 
     public void removePermission(String world, Permission permission) {
-        if (hasWorldPass(world)) return;
-        getWorldPass(world).removePermission(permission);
+        if (hasWorldPass(world)) {
+            getWorldPass(world).removePermission(permission);
+            return;
+        }
+        removePermission(permission);
     }
 
-
     public boolean removeGroup(String world, String group) {
-        if (hasWorldPass(world)) return false;
-        return getWorldPass(world).removeGroup(group);
+        if (hasWorldPass(world)) {
+            return getWorldPass(world).removeGroup(group);
+        }
+        return removeGroup(group);
     }
 
     public void removeGroup(String world, Group group) {
-        if (hasWorldPass(world)) return;
-        getWorldPass(world).removeGroup(group);
+        if (hasWorldPass(world)) {
+            getWorldPass(world).removeGroup(group);
+            return;
+        }
+        removeGroup(group);
     }
 
     public boolean inGroup(String world, String groupStr) {
@@ -273,7 +277,6 @@ public abstract class BaseNode extends Node {
         if (node == null) return false;
         return node.inGroup(group.getName());
     }
-
 
     @Override
     public boolean equals(Object o) {

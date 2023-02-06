@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Commander {
-    private static List<Cmd> commands = new ArrayList<Cmd>();
+    private static final List<Cmd> commands = new ArrayList<Cmd>();
     private static PluginBase plugin;
 
     public static void init(PluginBase plg) {

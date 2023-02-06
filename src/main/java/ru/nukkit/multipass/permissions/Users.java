@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class Users {
 
-    private static ConcurrentMap<String, User> users = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+    private static final ConcurrentMap<String, User> users = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public static CompletableFuture<User> loadUser(Player player) {
         return loadUser(player.getName());
@@ -68,7 +68,7 @@ public class Users {
     }
 
     public static void closeUser(Player player) {
-        if (users.containsKey(player.getName())) users.remove(player.getName());
+        users.remove(player.getName());
     }
 
     public static void closeOfflineUsers() {
@@ -144,8 +144,10 @@ public class Users {
     public static void removeGroup(String userName, String group) {
         Users.getUser(userName).whenComplete((user, e) -> {
             if (e == null) {
-                if (user.inGroup(group)) user.removeGroup(group);
-                saveUser(user);
+                if (user.inGroup(group)) {
+                    user.removeGroup(group);
+                    saveUser(user);
+                }
             }
         });
     }
@@ -155,8 +157,8 @@ public class Users {
             if (e == null) {
                 if (user.inGroup(group)) {
                     user.removeGroup(world, group);
+                    saveUser(user);
                 }
-                saveUser(user);
             }
         });
     }
@@ -299,13 +301,11 @@ public class Users {
 
     public static void recalculatePermissions() {
         Message.debugMessage("Recalculating online users permissions");
-        Server.getInstance().getOnlinePlayers().values().forEach(player -> {
-            Users.getUser(player.getName()).whenComplete((user, e) -> {
-                if (e == null) {
-                    user.recalculatePermissions();
-                }
-            });
-        });
+        Server.getInstance().getOnlinePlayers().values().forEach(player -> Users.getUser(player.getName()).whenComplete((user, e) -> {
+            if (e == null) {
+                user.recalculatePermissions();
+            }
+        }));
     }
 
     public static void saveUser(User user) {
@@ -344,9 +344,7 @@ public class Users {
     }
 
     public static void remove(String id) {
-        if (users.containsKey(id)) {
-            users.remove(id);
-        }
+        users.remove(id);
         Providers.removeUser(id).whenComplete((remove, e) -> {
             if (e != null) {
                 e.printStackTrace();

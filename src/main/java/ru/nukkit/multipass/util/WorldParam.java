@@ -23,12 +23,12 @@ public class WorldParam {
     public String param;
 
     public WorldParam(String param) {
-        world = "";
+        this.world = "";
         this.param = param;
         if (param.contains(":")) {
             String[] ln = param.split(":");
-            world = ln[0];
-            param = ln[1];
+            this.world = ln[0];
+            this.param = ln[1];
         }
     }
 
