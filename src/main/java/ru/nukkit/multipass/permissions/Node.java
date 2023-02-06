@@ -62,8 +62,7 @@ public class Node {
     }
 
     public void removePermission(Permission permission) {
-        if (this.permissions.contains(permission))
-            this.permissions.remove(permission);
+        this.permissions.remove(permission);
     }
 
     public Collection<Permission> getPermissions() {

@@ -71,7 +71,7 @@ public class DatabaseSource extends DataProvider {
 
     private boolean enabled;
 
-    private Sql2o sql2o;
+    private final Sql2o sql2o;
 
 
     public DatabaseSource() {
@@ -195,7 +195,7 @@ public class DatabaseSource extends DataProvider {
                 if (user != null) users.add(user);
             }
             if (groups != null) updateAllGroups(groups);
-            if (users != null && !users.isEmpty()) {
+            if (!users.isEmpty()) {
                 users.forEach(user -> Users.setUser(new User(user.getName(), user)));
             }
         }, delay, delay, true);

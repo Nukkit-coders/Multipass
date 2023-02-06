@@ -38,7 +38,7 @@ public class Groups {
     }
 
     public static Group getGroup(String name) {
-        return groups.containsKey(name) ? groups.get(name) : null;
+        return groups.getOrDefault(name, null);
     }
 
     public static boolean exist(String id) {
@@ -72,7 +72,6 @@ public class Groups {
     public static Collection<Group> getAll() {
         return groups.values();
     }
-
 
     public static boolean addGroup(String groupId, WorldParam wp) {
         return wp.hasWorld() ? addGroup(groupId, wp.world, wp.param) : addGroup(groupId, wp.param);

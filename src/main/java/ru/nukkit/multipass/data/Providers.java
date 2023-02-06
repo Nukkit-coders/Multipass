@@ -42,7 +42,7 @@ public enum Providers {
     YAML(YamlSource.class),
     DATABASE(DatabaseSource.class);
 
-    private Class<? extends DataProvider> clazz;
+    private final Class<? extends DataProvider> clazz;
     private DataProvider source;
 
     Providers(Class<? extends DataProvider> clazz) {

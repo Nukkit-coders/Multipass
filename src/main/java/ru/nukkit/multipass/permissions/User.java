@@ -80,11 +80,9 @@ public class User extends BaseNode {
         player.recalculatePermissions();
         if (!perms.isEmpty()) attachment.setPermissions(perms);
         player.recalculatePermissions();
-        if (Message.isDebug()) perms.entrySet().forEach(e -> {
-            Message.debugMessage(e.getValue() ? "+" : "-", e.getKey());
-        });
+        if (Message.isDebug()) perms.forEach((key, value) -> Message.debugMessage(value ? "+" : "-", key));
 
-        Server.getInstance().getScheduler().scheduleDelayedTask(MultipassPlugin.getPlugin(),  () -> player.sendCommandData(), 10);
+        Server.getInstance().getScheduler().scheduleDelayedTask(MultipassPlugin.getPlugin(), player::sendCommandData, 10);
     }
 
     public PermissionAttachment getAttachment() {
@@ -111,7 +109,7 @@ public class User extends BaseNode {
 
     public boolean isEmpty() {
         return this.permissions.isEmpty() &&
-                (groups.isEmpty() || (groups.size() == 1 && (Groups.isDefault(groups.stream().toArray(String[]::new)[0])))) &&
+                (groups.isEmpty() || (groups.size() == 1 && (Groups.isDefault(groups.toArray(new String[0])[0])))) &&
                 this.getWorldPass().isEmpty() &&
                 this.prefix.isEmpty() && this.suffix.isEmpty() && (this.priority == MultipassPlugin.getCfg().userPriority);
     }

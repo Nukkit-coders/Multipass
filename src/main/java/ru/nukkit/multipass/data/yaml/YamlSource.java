@@ -35,8 +35,8 @@ import java.util.List;
 
 public class YamlSource extends DataProvider {
 
-    private File userDir;
-    private File groupFile;
+    private final File userDir;
+    private final File groupFile;
 
     public YamlSource() {
         this.userDir = new File(MultipassPlugin.getPlugin().getDataFolder() + File.separator + "users");
@@ -92,9 +92,7 @@ public class YamlSource extends DataProvider {
             ConfigSection cfgSection = passToSection(user, true);
             cfg.setAll(cfgSection);
             ConfigSection worlds = new ConfigSection();
-            user.getWorldPass().entrySet().forEach(e -> {
-                worlds.set(e.getKey(), passToSection(e.getValue(), false));
-            });
+            user.getWorldPass().forEach((key, value) -> worlds.set(key, passToSection(value, false)));
             cfg.set("worlds", worlds);
             Message.debugMessage(user.getName(), " saved.");
             cfg.save(file);
@@ -124,9 +122,7 @@ public class YamlSource extends DataProvider {
         groups.forEach(g -> {
             ConfigSection group = passToSection(g, true);
             ConfigSection worlds = new ConfigSection();
-            g.getWorldPass().entrySet().forEach(e -> {
-                worlds.set(e.getKey(), passToSection(e.getValue(), false));
-            });
+            g.getWorldPass().forEach((key, value) -> worlds.set(key, passToSection(value, false)));
             group.set("worlds", worlds);
             cfg.set(g.getName(), group);
         });
@@ -138,9 +134,9 @@ public class YamlSource extends DataProvider {
         List<Group> groups = new ArrayList<>();
         if (!groupFile.exists()) return groups;
         Config cfg = new Config(groupFile, Config.YAML);
-        cfg.getSections().entrySet().forEach(e -> {
-            Node node = sectionToPass((ConfigSection) e.getValue());
-            Group group = new Group(e.getKey(), node);
+        cfg.getSections().forEach((key, value) -> {
+            Node node = sectionToPass((ConfigSection) value);
+            Group group = new Group(key, node);
             ConfigSection worlds = cfg.getSection("worlds");
             for (String world : worlds.getKeys(false)) {
                 ConfigSection ws = worlds.getSection(world);
