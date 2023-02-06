@@ -112,8 +112,8 @@ public enum Message {
     USER_REMOVEGROUPW_NOTSET("Failed to remove player %2% from group %1% (world %3%). It was not configured", 'c', '4'),
     USER_REMOVEGROUP_OK("Player %2% removed from group %1%"),
     USER_REMOVEGROUPW_OK("Player %2% removed from group %1% (world %3%)"),
-    USER_REMOVEGROUP_OK_INFORM("You was removed from the group %1%"),
-    USER_REMOVEGROUPW_OK_INFORM("You was removed from the group %1% (world %2%)"),
+    USER_REMOVEGROUP_OK_INFORM("You were removed from the group %1%"),
+    USER_REMOVEGROUPW_OK_INFORM("You were removed from the group %1% (world %2%)"),
     USER_NOTEXIST("Failed to remove user. User %1% is not exist", 'c', '4'),
     USER_REMOVE_OK("User %1% removed"),
 
