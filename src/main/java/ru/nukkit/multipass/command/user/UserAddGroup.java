@@ -28,7 +28,7 @@ import ru.nukkit.multipass.permissions.Users;
 import ru.nukkit.multipass.util.Message;
 import ru.nukkit.multipass.util.WorldParam;
 
-@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"\\S+", "addgroup|addgrp|agrp|ag", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_ADDGROUP)
+@CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"[A-Za-z0-9 ]{1,15}", "addgroup|addgrp|agrp|ag", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_ADDGROUP)
 public class UserAddGroup extends Cmd {
     @Override
     public boolean execute(CommandSender sender, Player player, String[] args) {
