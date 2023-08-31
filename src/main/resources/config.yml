@@ -34,7 +34,7 @@ permissions:
 storage:
 # Database type:
 # - YAML - yaml files
-# - DATABASE - MySQL or SQLite. DbLib plugins is required: https://nukkitx.com/resources/dblib.12/
+# - DATABASE - MySQL or SQLite. DataManager plugins is required: https://github.com/hteppl/DataManager
   type: YAML
 # Auto-update interval (for multi-server system). If this values is not equal to '0'
 # groups and permissions will be automatically updated.
@@ -48,7 +48,7 @@ storage:
     source: DEFAULT
     sqlite:
 # Custom SQLite file name
-      file: permissions.db
+      file: permissions
 # Custom MySQL configuration
     mysql:
       host: localhost

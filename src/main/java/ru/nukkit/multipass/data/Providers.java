@@ -19,8 +19,9 @@
 package ru.nukkit.multipass.data;
 
 import cn.nukkit.Server;
+import me.hteppl.data.database.MySQLDatabase;
+import me.hteppl.data.database.SQLiteDatabase;
 import org.sql2o.Sql2o;
-import ru.nukkit.dblib.DbLib;
 import ru.nukkit.multipass.MultipassPlugin;
 import ru.nukkit.multipass.data.database.DatabaseSource;
 import ru.nukkit.multipass.data.yaml.YamlSource;
@@ -31,7 +32,6 @@ import ru.nukkit.multipass.util.Cfg;
 import ru.nukkit.multipass.util.Message;
 import ru.nukkit.multipass.util.MultiTask;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -204,7 +204,7 @@ public enum Providers {
 
 
     public static Sql2o getSql2o() {
-        if (Server.getInstance().getPluginManager().getPlugin("DbLib") == null) {
+        if (Server.getInstance().getPluginManager().getPlugin("DataManager") == null) {
             Message.DB_DBLIB_NOTFOUND.log();
             return null;
         }
@@ -212,12 +212,10 @@ public enum Providers {
         switch (cfg.dblibSource.toLowerCase()) {
             case "dblib":
             case "default":
-                return DbLib.getSql2o();
             case "sqlite":
-                File dbFile = new File(MultipassPlugin.getPlugin().getDataFolder() + File.separator + cfg.customSQLite);
-                return DbLib.getSql2o(DbLib.getSqliteUrl(dbFile), "", "");
+                return (new SQLiteDatabase(cfg.customSQLite)).getSql2o();
             case "mysql":
-                return DbLib.getSql2oMySql(cfg.mysqlHost, cfg.mysqlPort, cfg.mysqlDb, cfg.mysqlName, cfg.mysqlPassword);
+                return (new MySQLDatabase(cfg.mysqlHost, cfg.mysqlPort, cfg.mysqlDb, cfg.mysqlName, cfg.mysqlPassword)).getSql2o();
         }
         return null;
     }

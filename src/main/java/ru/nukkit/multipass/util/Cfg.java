@@ -73,7 +73,7 @@ public class Cfg extends SimpleConfig {
     public String dblibSource = "DEFAULT"; //SQLITE, MYSQL
 
     @Path("storage.database.sqlite.file")
-    public String customSQLite = "permissions.db";
+    public String customSQLite = "permissions";
 
     @Path("storage.database.mysql.host")
     public String mysqlHost = "localhost";
