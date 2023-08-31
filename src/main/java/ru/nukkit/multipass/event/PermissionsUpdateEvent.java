@@ -43,17 +43,15 @@ public class PermissionsUpdateEvent extends Event {
      * Get user, which permissions was changed.
      * Returns null permissions updated for all users.
      *
-     * @return
      */
     public String getUser() {
         return this.user;
     }
 
     /**
-     * Check is Permission update related to single player or it was a mass update
+     * Check is Permission update related to single player, or it was a mass update
      * (for example changing groups)
      *
-     * @return
      */
     public boolean isMassUpdate() {
         return user == null;
