@@ -38,7 +38,7 @@ public class LeelooListener implements Listener {
         Users.closeUser(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onTeleport(PlayerTeleportEvent event) {
         if (!MultipassPlugin.getCfg().enableWorldSupport) return;
         if (event.getFrom().getLevel().equals(event.getTo().getLevel())) return;

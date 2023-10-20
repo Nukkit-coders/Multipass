@@ -112,6 +112,7 @@ public class Commander {
             CommandExecutor newCmd = new CommandExecutor(cmd.getCommand());
             newCmd.setDescription(description == null ? cmd.getDescription() : description.getText("NOCOLOR"));
             newCmd.setAliases(cmd.getAliases());
+            newCmd.setPermission("multipass.admin"); // hide from command suggestions for non OPs
             plugin.getServer().getCommandMap().register(plugin.getName() + "_cmd", newCmd);
             Message.CMD_REGISTERED.debug(cmd.toString());
         }
