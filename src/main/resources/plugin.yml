@@ -4,3 +4,8 @@ version: "${pom.version}"
 author: fromgate, nukkit.ru
 api: ["1.0.0"]
 softdepend: ["DbLib"]
+permissions:
+  multipass.admin:
+    default: op
+  multipass.informed-user:
+    default: op

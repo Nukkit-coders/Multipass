@@ -19,12 +19,12 @@
 package ru.nukkit.multipass.command.user;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import ru.nukkit.multipass.command.Cmd;
 import ru.nukkit.multipass.command.CmdDefine;
 import ru.nukkit.multipass.permissions.Users;
 import ru.nukkit.multipass.util.Message;
+import ru.nukkit.multipass.util.Util;
 import ru.nukkit.multipass.util.WorldParam;
 
 @CmdDefine(command = "user", alias = "userperm", allowConsole = true, subCommands = {"[A-Za-z0-9 ]{1,15}", "removegroup|rmvgrp|rgrp|rg", "\\S+"}, permission = "multipass.admin", description = Message.CMD_USER_REMOVEGROUP)
@@ -44,8 +44,7 @@ public class UserRemoveGroup extends Cmd {
                                 .print(sender, wp.param, userName, wp.world);
                     } else {
                         Users.removeGroup(userName, wp);
-                        wp.message(Message.USER_REMOVEGROUP_OK_INFORM, Message.USER_REMOVEGROUPW_OK_INFORM)
-                                .print(Server.getInstance().getPlayerExact(userName), wp.param, wp.world);
+                        Util.informMessage(userName, wp.message(Message.USER_REMOVEGROUP_OK_INFORM, Message.USER_REMOVEGROUPW_OK_INFORM), wp.param, wp.world);
                         wp.message(Message.USER_REMOVEGROUP_OK, Message.USER_REMOVEGROUPW_OK).print(sender, wp.param, userName, wp.world);
                     }
                 } else {

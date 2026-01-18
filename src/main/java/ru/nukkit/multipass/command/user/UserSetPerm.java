@@ -34,7 +34,7 @@ public class UserSetPerm extends Cmd {
         String userName = args[0];
         WorldParam wp = new WorldParam(args, 2);
         Users.setPermission(userName, wp);
-        wp.message(Message.USER_SETPERM_OK_INFORM, Message.USER_SETPERMW_OK_INFORM).print(Util.getPlayer(userName), wp.param, wp.world);
+        Util.informMessage(userName, wp.message(Message.USER_SETPERM_OK_INFORM, Message.USER_SETPERMW_OK_INFORM), wp.param, wp.world);
         return wp.message(Message.USER_SETPERM_OK, Message.USER_SETPERMW_OK).print(sender, userName, wp.param, wp.world);
     }
 }
